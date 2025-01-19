@@ -98,3 +98,27 @@ Before making requests to protected endpoints, you need to authenticate by loggi
 - `/orders` (GET) – Get all orders
 
 Refer to the API documentation in the Swagger UI for further details on each endpoint, request parameters, and response formats.
+
+## Challenges Faced and How I Overcame Them
+
+1. **Integrating JWT Authentication**:
+   - Challenge: Understanding and implementing JWT for securing protected routes was initially challenging.
+   - Solution: I referred to official documentation and tutorials on how JWT works and implemented middleware to validate tokens seamlessly.
+
+2. **Setting Up Swagger Documentation**:
+   - Challenge: Creating clear and organized API documentation with Swagger required learning its configuration syntax.
+   - Solution: By following Swagger's official guide and examples, I structured the documentation with detailed endpoints and categorized them for better usability.
+
+3. **Handling Complex MongoDB Relationships**:
+   - Challenge: Managing relationships between books, authors, and orders required understanding Mongoose's population and referencing.
+   - Solution: I carefully defined schemas with proper references and used `populate()` to simplify data retrieval.
+
+4. **Error Handling and Validation**:
+   - Challenge: Ensuring robust error handling for invalid inputs and edge cases was time-consuming.
+   - Solution: I implemented centralized error handling middleware and added validation using libraries like `Joi`.
+
+5. **Managing Development Environment Variables**:
+   - Challenge: Keeping sensitive data like database URIs and JWT secrets secure.
+   - Solution: Used `.env` files to store sensitive information and ensured they were excluded from version control using `.gitignore`.
+
+Each of these challenges provided valuable learning experiences,making the application more robust and secure.
