@@ -6,13 +6,14 @@ const {
   updateAuthor,
   deleteAuthor,
 } = require("../controllers/author");
+const { verifyToken, verifyRole } = require("../middleware/auth.js");
 
 const router = express.Router();
 
-router.get("/", getAllAuthors);
-router.get("/:id", getAuthorById);
-router.post("/", createAuthor);
-router.put("/:id", updateAuthor);
-router.delete("/:id", deleteAuthor);
+router.get("/", verifyToken, verifyRole(["customer", "admin"]), getAllAuthors);
+router.get("/:id", verifyToken, verifyRole(["customer", "admin"]), getAuthorById);
+router.post("/", verifyToken, verifyRole("admin"), createAuthor);
+router.put("/:id", verifyToken, verifyRole("admin"), updateAuthor);
+router.delete("/:id", verifyToken, verifyRole("admin"), deleteAuthor);
 
 module.exports = router;
