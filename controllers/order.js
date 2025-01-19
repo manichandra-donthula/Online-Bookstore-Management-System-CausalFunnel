@@ -1,6 +1,95 @@
 const Order = require("../models/Order");
 const Book = require("../models/Book");
 
+/**
+ * @swagger
+ * tags:
+ *   - name: "Orders"
+ *     description: "Operations related to orders"
+ */
+
+/**
+ * @swagger
+ * /orders:
+ *   post:
+ *     tags: ["Orders"]
+ *     summary: Place an order
+ *     description: Allows a customer to place an order, validating book availability and calculating the total cost.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customer:
+ *                 type: string
+ *                 description: Customer's name or ID
+ *               books:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     book:
+ *                       type: string
+ *                       description: Book's unique ID
+ *                     quantity:
+ *                       type: number
+ *                       description: Quantity of the book being ordered
+ *                     price:
+ *                       type: number
+ *                       description: Price per book
+ *               shippingAddress:
+ *                 type: string
+ *                 description: Shipping address for the order
+ *     responses:
+ *       201:
+ *         description: Order placed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 customer:
+ *                   type: string
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       book:
+ *                         type: string
+ *                       quantity:
+ *                         type: number
+ *                       price:
+ *                         type: number
+ *                 totalCost:
+ *                   type: number
+ *                 shippingAddress:
+ *                   type: string
+ *       400:
+ *         description: Invalid request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Customer and books are required"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to place order"
+ */
 // Place an order
 exports.placeOrder = async (req, res) => {
   const { customer, books, shippingAddress } = req.body;
@@ -41,6 +130,53 @@ exports.placeOrder = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /orders:
+ *   get:
+ *     tags: ["Orders"]
+ *     summary: Get all orders
+ *     description: Retrieves a list of all orders, including the details of books and total costs.
+ *     responses:
+ *       200:
+ *         description: A list of orders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   customer:
+ *                     type: string
+ *                   books:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         book:
+ *                           type: string
+ *                         quantity:
+ *                           type: number
+ *                         price:
+ *                           type: number
+ *                   totalCost:
+ *                     type: number
+ *                   shippingAddress:
+ *                     type: string
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to retrieve orders"
+ */
 // Get all orders
 exports.getAllOrders = async (req, res) => {
   try {

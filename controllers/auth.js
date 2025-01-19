@@ -5,6 +5,70 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+/**
+ * @swagger
+ * tags:
+ *   - name: "Signin/Signup"
+ *     description: "User authentication and registration"
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     tags: ["Signin/Signup"]
+ *     summary: User registration
+ *     description: Registers a new user.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: [customer, admin]
+ *                 default: customer
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User registered successfully"
+ *       400:
+ *         description: User already exists or required fields are missing
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "User already exists"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Registration failed"
+ */
 // Register User
 exports.registerUser = async (req, res) => {
     const { email, password, role } = req.body;
@@ -31,6 +95,62 @@ exports.registerUser = async (req, res) => {
     }
 };
 
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     tags: ["Signin/Signup"]
+ *     summary: User login
+ *     description: Logs in a user and returns a JWT token.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Login successful, returns JWT token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login Successfull!!"
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       400:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid email or password"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Login failed"
+ */
 // Login User
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -53,7 +173,7 @@ exports.loginUser = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN });
 
-        res.status(200).json({ message: "Login Successfull!!",token });
+        res.status(200).json({ message: "Login Successfull!!", token });
     } catch (error) {
         res.status(500).json({ error: "Login failed", details: error.message });
     }

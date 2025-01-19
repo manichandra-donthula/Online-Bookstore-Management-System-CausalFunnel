@@ -1,5 +1,51 @@
 const Author = require("../models/Author");
 
+/**
+ * @swagger
+ * tags:
+ *   - name: "Authors"
+ *     description: "Operations related to authors"
+ */
+
+/**
+ * @swagger
+ * /authors:
+ *   get:
+ *     tags: ["Authors"]
+ *     summary: Get all authors
+ *     description: Retrieves a list of all authors, with their books included.
+ *     responses:
+ *       200:
+ *         description: A list of authors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   books:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         title:
+ *                           type: string
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to retrieve authors"
+ */
 // Get all authors
 exports.getAllAuthors = async (req, res) => {
   try {
@@ -10,6 +56,60 @@ exports.getAllAuthors = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /authors/{id}:
+ *   get:
+ *     tags: ["Authors"]
+ *     summary: Get a single author by ID
+ *     description: Retrieves the details of a single author, including their books.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Author's unique ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Author details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       title:
+ *                         type: string
+ *       404:
+ *         description: Author not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Author not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to retrieve author"
+ */
 // Get a single author by ID
 exports.getAuthorById = async (req, res) => {
   try {
@@ -21,6 +121,65 @@ exports.getAuthorById = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /authors:
+ *   post:
+ *     tags: ["Authors"]
+ *     summary: Create a new author
+ *     description: Adds a new author to the system.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Author's name
+ *               books:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Array of book IDs
+ *     responses:
+ *       201:
+ *         description: Author created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *       400:
+ *         description: Missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Author name is required"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to create author"
+ */
 // Create a new author
 exports.createAuthor = async (req, res) => {
   const { name, books } = req.body;
@@ -35,6 +194,72 @@ exports.createAuthor = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /authors/{id}:
+ *   put:
+ *     tags: ["Authors"]
+ *     summary: Update an existing author
+ *     description: Modifies the details of an existing author.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Author's unique ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Author's name
+ *               books:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Array of book IDs
+ *     responses:
+ *       200:
+ *         description: Author updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 books:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *       404:
+ *         description: Author not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Author not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to update author"
+ */
 // Update an author
 exports.updateAuthor = async (req, res) => {
   try {
@@ -46,6 +271,52 @@ exports.updateAuthor = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /authors/{id}:
+ *   delete:
+ *     tags: ["Authors"]
+ *     summary: Delete an author
+ *     description: Removes an author from the system.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: Author's unique ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Author deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Author deleted successfully"
+ *       404:
+ *         description: Author not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Author not found"
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to delete author"
+ */
 // Delete an author
 exports.deleteAuthor = async (req, res) => {
   try {
