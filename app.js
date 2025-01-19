@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 app.use("/books", require("./routes/book"));
 app.use("/authors", require("./routes/author"));
 app.use("/orders", require("./routes/order"));
+app.use("/auth", require("./routes/auth"));
 
 // For unmatched routes
 app.use((req, res, next) => {
